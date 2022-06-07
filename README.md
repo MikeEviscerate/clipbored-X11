@@ -10,8 +10,9 @@ It is header file neatly wrapping and hiding all the BS of copying and pasting i
 `XPaste()` for pasting from clipboard, returns a string. `XCopy()` takes a string as input and copies it to clipboard. 
 
 # How to use it? (Important)
+Just include the header in your program. 
 
-Well, you will need to initialise things first. I have wrapped it up into the function macro `clipBoredInit(enableCopying)`. 
+Well, you will need to initialise things. I have wrapped it up into the function macro `clipBoredInit(enableCopying)`. 
 
 `enableCopying` is just a boolean input, use `true` or `1` for enabling copying. Or else, use `false` or `0`. Afterwards, you 
 can use `XCopy()` and `XPaste()` anywhere. If you don't call it before using those functions, it will cause a segmentation fault.
@@ -78,4 +79,4 @@ It is really convenient.
 **Why am I forking and using (grand) child for copying instead of using threads?**   
 So that you can be able to paste long after the program dies. At least until you copy something else.
 
-Rest assured, I will update the code time to time.
+Rest assured, I will update the code time to time. It is also not thread-safe. But what do you expect from a noob?
