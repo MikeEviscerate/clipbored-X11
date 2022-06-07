@@ -1,7 +1,7 @@
 # Clipbored-X11
 A header including two functions, one for copying to and one for pasting from clipboard in X11.
 
-I am new to making Markdown and such, as well as me being me being inexperienced at using GitHub. So, this is going to be weird. 
+I am new to making Markdown and such, as well as me being inexperienced at using GitHub. So, this is going to be weird. 
 
 Note: I did use code from [here](https://github.com/exebook/x11clipboard). It wasn't licensed but I did get permission from **exebook** to use it.
 
