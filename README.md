@@ -1,9 +1,9 @@
 # Clipbored-X11
 A header including two functions, one for copying to and one for pasting from clipboard in X11.
 
-I am new to making Markdown and suchm as well as inexperienced at using GitHub, so this is going to weird. 
+I am new to making Markdown and such, as well as me being me being inexperienced at using GitHub. So, this is going to be weird. 
 
-Note: I did use code from [here](https://github.com/exebook/x11clipboard). It was unlicensed but I did get permission from **exebook** to use it.
+Note: I did use code from [here](https://github.com/exebook/x11clipboard). It wasn't licensed but I did get permission from **exebook** to use it.
 
 # What does it do?
 It is header file neatly wrapping and hiding all the BS of copying and pasting in C for X11 into two functions.
@@ -77,6 +77,7 @@ Suggest good code and/or fork. Some stuff was intended.
 It is really convenient. 
 
 **Why am I forking and using (grand) child for copying instead of using threads?**   
-So that you can be able to paste long after the program dies. At least until you copy something else.
+So that you can paste the copied data long after the program dies, or at least until you copy something else.
 
-Rest assured, I will update the code time to time. It is also not thread-safe. But what do you expect from a noob?
+Rest assured, I will update the code time to time. It is also not thread-safe. But what do you expect from a noob? 
+Don't expect much from it.
