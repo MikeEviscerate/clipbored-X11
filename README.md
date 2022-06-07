@@ -10,7 +10,7 @@ It is header file neatly wrapping and hiding all the BS of copying and pasting i
 `XPaste()` for pasting from clipboard, returns a string. `XCopy()` takes a string as input and copies it to clipboard. 
 
 # How to use it? (Important)
-Just include the header in your program. 
+Just include the header in your source. 
 
 Well, you will need to initialise things. I have wrapped it up into the function macro `clipBoredInit(enableCopying)`. 
 
@@ -19,7 +19,7 @@ can use `XCopy()` and `XPaste()` anywhere. If you don't call it before using tho
 
 I suggest you look into how `clipBoredInit()` is defined so that you can alter it to be better in your case. 
 
-It uses POSIX threads, so don't forget to include the library.
+I didn't try including it in C++ source files at the time of writing this. I don't know if it will work. 
 
 # Why create it?
 No one really made it before. And there are bunch of newbies who can take advantage of it.
