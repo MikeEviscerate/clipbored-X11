@@ -12,7 +12,8 @@ It is header file neatly wrapping and hiding all the BS of copying and pasting i
 # How to use it? (Important)
 Just include the header in your source. 
 
-Well, you will need to initialise things. I have wrapped it up into the function macro `clipBoredInit(enableCopying)`. 
+Well, you will need to initialise things. I have wrapped it up into the function macro `clipBoredInit(enableCopying)`. Preferably, use it in your 
+first line of `main()`.
 
 `enableCopying` is just a boolean input, use `true` or `1` for enabling copying. Or else, use `false` or `0`. Afterwards, you 
 can use `XCopy()` and `XPaste()` anywhere. If you don't call it before using those functions, it will cause a segmentation fault.
