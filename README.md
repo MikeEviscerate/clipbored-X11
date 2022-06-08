@@ -16,11 +16,11 @@ Well, you will need to initialise things. I have wrapped it up into the function
 first line of `main()`.
 
 `enableCopying` is just a boolean input, use `true` or `1` for enabling copying. Or else, use `false` or `0`. Afterwards, you 
-can use `XCopy()` and `XPaste()` anywhere. If you don't call it before using those functions, it will cause a segmentation fault.
+can use `XCopy()` and `XPaste()` anywhere. If you don't call it before using those functions, it will cause a segmentation fault. 
 
 I suggest you look into how `clipBoredInit()` is defined so that you can alter it to be better in your case. 
 
-I didn't try including it in C++ source files at the time of writing this. I don't know if it will work. 
+I didn't try including it in C++ source files at the time of writing this. I don't know if it will work with C++ stuff. 
 
 # Why create it?
 No one really made it before. And there are bunch of newbies who can take advantage of it.
@@ -71,14 +71,13 @@ No one really made it before. And there are bunch of newbies who can take advant
 </tbody>
 </table>
 
-# Bad code and practices?
-Suggest good code and/or fork. Some stuff was intended. 
+# Bad code and practices? 
+Suggest good code and/or fork. Some stuff was intended. Some wasn't.
 
-**Definitions in macro?**  
-It is really convenient. 
+**Definitions in a header file?**  
+It was really convenient. 
 
 **Why am I forking and using (grand) child for copying instead of using threads?**   
 So that you can paste the copied data long after the program dies, or at least until you copy something else.
 
-Rest assured, I will update the code time to time. It is also not thread-safe. But what do you expect from a noob? 
-Don't expect much from it.
+It is not thread-safe. But what do you expect from a noob? Don't expect much from it. Rest assured, I will update the code time to time, but it is not a guarantee.
