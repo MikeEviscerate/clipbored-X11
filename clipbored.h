@@ -132,7 +132,7 @@ char * XPaste() {
 		if(event.xselection.property) {
 			XGetWindowProperty(event.xselection.display, event.xselection.requestor, event.xselection.property, 0L, (~0L), 0, AnyPropertyType, &ClipDataType, &format, &size, &unreadBytes, (unsigned char **) &AddrHolder);
 
-			if(ClipDataType == ___prut->TextEncoding) {
+			if(ClipDataType == ___prut->TextEncoding || ClipDataType == XA_STRING) {
 				//Want to make the output freeable using regular free().
 				//XFree() is defined as Xfree() and Xfree is defined as
 				//free() in libX11 at the time of writing this comment.
