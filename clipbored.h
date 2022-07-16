@@ -1,7 +1,12 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
+
+#ifdef __cplusplus
+#include <string>
+#endif
 
 #include <unistd.h>
 #include <pthread.h>
@@ -17,15 +22,15 @@
 //for reducing any chance of conflicts
 const char * shmPostfix = "_clipbored"; 
 
-void ___millisecSleep(long millisec) {
+void __millisecSleep(long millisec) {
 	struct timespec ts;
 	ts.tv_sec = millisec / 1000;
 	ts.tv_nsec = (millisec % 1000) * 1000000;
 	nanosleep(&ts, &ts);
 }
 
-char * ___LongToStr(long long input) {
-	static char output[32] = "";
+char * __LongToStr(long long input) {
+	char output[32] = "";
 	sprintf(output, "%lld", input);
 	return output;
 }
@@ -76,7 +81,7 @@ char ___SharedStringPID[23] = "/";
 
 
 //Functions for initialising stuff
-void ___X11prereqInit() {
+void __X11prereqInit() {
 	Display * display = XOpenDisplay(0);
 	___prut = (___prereqUnix *) malloc(sizeof(___prereqUnix));
 	___prut->display = display;
@@ -95,14 +100,14 @@ void ___X11prereqInit() {
 //Separate from the function above as this ain't X11.
 void ___clipInit(___CopyTextStruct ** CTS) {
 	pid_t pid = getpid();
-	strcat(___SharedStringPID, ___LongToStr(pid));
+	strcat(___SharedStringPID, __LongToStr(pid));
 	strcat(___SharedStringPID, shmPostfix);
 	strcat(___SharedStringPID, "_a");
 	
 	//Opening shared memory
 	int shmFd = shm_open(___SharedStringPID, O_CREAT | O_RDWR, 0666);
 	ftruncate(shmFd, sizeof(___CopyTextStruct));
-	(*CTS) = mmap(0, sizeof(___CopyTextStruct), PROT_READ | PROT_WRITE, MAP_SHARED, shmFd, 0);
+	(*CTS) = (___CopyTextStruct *)mmap(0, sizeof(___CopyTextStruct), PROT_READ | PROT_WRITE, MAP_SHARED, shmFd, 0);
 
 	(*CTS)->stayAlive = true;
 	(*CTS)->ParentID = pid;
@@ -115,13 +120,20 @@ void ___clipInit(___CopyTextStruct ** CTS) {
 
 //Paste from Clipboard
 //Won't document. Not my code, I don't understand much of it myself.
+
+#ifdef __cplusplus
+std::string XPaste() {
+	std::string output;
+#else
 char * XPaste() {
+	char * output = 0;
+#endif
 	Window window = XCreateSimpleWindow(___prut->display, RootWindow(___prut->display, ___prut->DefaultScreenIDnum), 0, 0, 1, 1, 0, BlackPixel(___prut->display, ___prut->DefaultScreenIDnum), WhitePixel(___prut->display, ___prut->DefaultScreenIDnum));
 
 	XEvent event;
 	size_t unreadBytes, size;
 	int format;
-	char * AddrHolder, *output = 0;
+	char * AddrHolder;
 
 	Atom ClipDataType;
 	XConvertSelection(___prut->display, ___prut->clipSelection, ___prut->TextEncoding, ___prut->xseldata, window, CurrentTime);
@@ -137,9 +149,19 @@ char * XPaste() {
 				//XFree() is defined as Xfree() and Xfree is defined as
 				//free() in libX11 at the time of writing this comment.
 
-				//output = strndup(AddrHolder, size);
-				//XFree(AddrHolder);
-				output = AddrHolder;
+				#ifdef __cplusplus
+					if (AddrHolder!=0) {
+						output = AddrHolder;
+					}
+					else {
+						output = "";
+					}
+					XFree(AddrHolder);
+				#else
+					//output = strndup(AddrHolder, size);
+					//XFree(AddrHolder);
+					output = AddrHolder;
+				#endif
 			}
 			XDeleteProperty(event.xselection.display, event.xselection.requestor, event.xselection.property);
 		}
@@ -149,10 +171,12 @@ char * XPaste() {
 	//Creates an empty string that is freeable. 
 	//Creates when function fails. Avoiding reading 
 	//garbage data from "output" being uninitialised
-	if (!output) {
-		output = (char*) calloc(1, sizeof(char)); 
-	}
-
+	#ifndef __cplusplus
+		if (!output) {
+			output = (char*) calloc(1, sizeof(char)); 
+		}
+	#endif
+	
 	return output;
 }
 
@@ -160,23 +184,23 @@ char * XPaste() {
 
 //"Copy to Clipboard" portion
 
-void * ___tellProcessToDie(void * input) {
+void * __tellProcessToDie(void * input) {
 	___CopyTextStruct * CTS = (___CopyTextStruct *) input;
 
 	//checks if OG process is alive and clip is open. Else, it tells it to commit die.
 	while (kill(CTS->ParentID, 0) == 0) {
-		___millisecSleep(10000);
+		__millisecSleep(10000);
 	}
 	while (CTS->clipOpen) {
-		___millisecSleep(5000);
+		__millisecSleep(5000);
 	}
-	___millisecSleep(50);
+	__millisecSleep(50);
 	CTS->stayAlive = false;
 	return 0;
 }
 
 
-void ___ClipboardController() {
+void __ClipboardController() {
 	//X11 stuff. Not my code. Won't be documented by me completely.
 
 	//TODO: Actual signal handling for proper exit.
@@ -189,7 +213,7 @@ void ___ClipboardController() {
 
 	//A thread for deciding whether the program should kill itself
 	pthread_t Euthaniser;
-	pthread_create(&Euthaniser, NULL, ___tellProcessToDie, (void*)___CTS);
+	pthread_create(&Euthaniser, NULL, __tellProcessToDie, (void*)___CTS);
 
 	Window window = XCreateSimpleWindow(___prut->display, RootWindow(___prut->display, ___prut->DefaultScreenIDnum), 0, 0, 1, 1, 0, BlackPixel(___prut->display, ___prut->DefaultScreenIDnum), WhitePixel(___prut->display, ___prut->DefaultScreenIDnum));
 	XEvent event;
@@ -197,7 +221,7 @@ void ___ClipboardController() {
 	while (___CTS->stayAlive) {
 		//Confusing, I know. Waits till clipboard is open, other part 
 		//is for breaking the loop when it will go through an exit step
-		while (!(___CTS->clipOpen) && ___CTS->stayAlive) {___millisecSleep(40);}
+		while (!(___CTS->clipOpen) && ___CTS->stayAlive) {__millisecSleep(40);}
 		
 		//read shared memory
 		int ShM22 = shm_open(___SharedStringPID, O_RDONLY, 0666);
@@ -250,9 +274,9 @@ void ___ClipboardController() {
 	return;
 }
 
-void XCopy(char * input) {
+void __XCopyProto(const char * input) {
 	//avoiding global variables. Still bad code?
-	static void * SharedMemLoc;
+	void * SharedMemLoc;
 	
 	if(!(___CTS->stayAlive)) {
 		//puts("Error: Clipboard managing daemon isn't running. Restart.")
@@ -262,9 +286,9 @@ void XCopy(char * input) {
 	//If clipboard is open, close it and destroy data
 	if(___CTS->clipOpen) {
 		___CTS->clipOpen = false;
-		___millisecSleep(20);
+		__millisecSleep(20);
 		munmap(SharedMemLoc, ___CTS->size);
-		___millisecSleep(45);
+		__millisecSleep(45);
 	}
 	
 	___CTS->size = strlen(input);
@@ -277,8 +301,21 @@ void XCopy(char * input) {
 	//copying and opening clipboard
 	memcpy(SharedMemLoc, (void*)input, ___CTS->size);
 	___CTS->clipOpen = true;
-	___millisecSleep(10);
+	__millisecSleep(10);
 }
+
+
+#ifdef __cplusplus
+void XCopy(const char * input) {
+	__XCopyProto(input);
+}
+void XCopy(std::string input) {
+	__XCopyProto(input.c_str());
+}
+#else
+#define XCopy(x) __XCopyProto(x);
+#endif
+
 
 #define clipBoredInit(enableCopying) {\
 	if (enableCopying) {\
@@ -286,12 +323,12 @@ void XCopy(char * input) {
 		pid_t ___child = ___daemonFork();\
 		if (___child <= 0) {\
 			if (___child < 0) {return ___child;}\
-			___X11prereqInit();\
-			___ClipboardController();\
+			__X11prereqInit();\
+			__ClipboardController();\
 			return 0;\
 		}\
 	}\
-	___X11prereqInit();\
+	__X11prereqInit();\
 }
 
 //returning main with ___child for exitting with error code
