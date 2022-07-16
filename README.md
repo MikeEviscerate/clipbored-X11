@@ -1,5 +1,5 @@
 # Clipbored-X11
-A header including two functions, one for copying to and one for pasting from the clipboard in X11.
+A **C** header including two functions, one for copying to and one for pasting from the clipboard in X11. If C++ is used, it allows inputs and outputs with std::string.
 
 I am new to making Markdown and such, as well as me being inexperienced at using GitHub. So, this is going to be weird. 
 
@@ -20,7 +20,7 @@ can use `XCopy()` and `XPaste()` anywhere. If you don't call it before using tho
 
 I suggest you look into how `clipBoredInit()` is defined so that you can alter it to be better in your case. 
 
-I didn't try including it in C++ source files at the time of writing this. I don't know if it will work with C++ stuff. 
+~~I didn't try including it in C++ source files at the time of writing this. I don't know if it will work with C++ stuff.~~ Works with C++ now. 
 
 # Why create it?
 No one really made it before. And there are a bunch of newbies who can take advantage of it.
