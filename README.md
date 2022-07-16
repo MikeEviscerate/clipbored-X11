@@ -17,6 +17,8 @@ first line of `main()`.
 
 `enableCopying` is just a boolean input, use `true` or `1` for enabling copying. Or else, use `false` or `0`. Afterwards, you 
 can use `XCopy()` and `XPaste()` anywhere. If you don't call it before using those functions, it will cause a segmentation fault. 
+If you use C, you would have to deallocate pointer returned by `XPaste()`. In noobspeak, `free()` the result of `XPaste()` after you are done.
+However, this is only for C. It returns in std::string in C++.
 
 I suggest you look into how `clipBoredInit()` is defined so that you can alter it to be better in your case. 
 
